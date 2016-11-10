@@ -1,6 +1,7 @@
 import random
 import sys
 import os
+import numpy as np
 
 print("hello world")
 
@@ -173,9 +174,112 @@ mixed_data_structure = {'family': [['liz', 1.6], ['tom', 1.8]],
                         'friends': [['mary', 1.6], ['john', 1.8]]}
 print('mixed_data_structure', mixed_data_structure)
 
+print('\n'*2)
 
 # Functions and methods *****************************************************
 # There are built-in functions, like max()
 # And there are methods, that are specific to each type of object. The call functions
 # on objects.
 
+# Some methods don't change the object they're called on, but others do.
+# (Como en Javascript)
+# help(str) to get the docs of a method
+
+print('Functions and methods *********************************')
+string1 = 'room'
+print(string1.upper())
+print('There are ', string1.count('o'), 'Os in', string1)
+
+areas = [10, 20, 15, 25, 30, 35, 15, 20]
+
+# The index method returns the index of the first element found that matches the arguments
+print(areas.index(20))
+# Counts the frequency of an element in a list
+print(areas.count(20))
+
+areas.append(21)
+print(areas)
+
+areas.remove(20)
+print(areas)
+
+areas.reverse()
+print(areas)
+
+print('\n'*2)
+
+# Numpy Arrays ***************************************
+# Numpy arrays allows you to make operations over an entire array
+
+# This is a list
+measures = [180, 215, 210, 210, 188, 176, 209, 200]
+
+# This is an array
+np_measures = np.array(measures)
+print(type(np_measures))
+
+# If I multiply a list by a number N it returns a new list with N times its elements
+print(measures*2)
+
+# If I multiply an array by a number, it does the operation element-wise.
+# It's like if we were using map + operator in clojure
+# It's the behaviour by default in a R vector
+print('An array multiplied by a number', np_measures*2)
+
+measures2 = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+measures3 = np.array([1, 2, 3, 4, 5, 6, 7])
+
+# We can divide 2 arrays element-wise if they have the same shape
+print('Division element-wise of 2 arrays of the same shape', np_measures / measures2)
+# print(np_measures / measures3) This will throw an error
+
+print('Multiplication element-wise of 2 arrays of the same shape', np_measures * measures2)
+
+# This returns a boolean vector
+print(np_measures < 200)
+# This returns a sliced vector with the elements that match the condition
+print(np_measures[np_measures < 200])
+
+# Numpy arrays can not contain elements with different types. If we try this:
+mixed_array = np.array([1, False, 3])
+mixed_array2 = np.array(['one', False, 3])
+# mixed_array will be created with no error, but some of the
+# elements' types are changed to end up with a homogeneous list
+# It's called Type coercion
+print(mixed_array)  # Array of numbers
+print(mixed_array2)  # Array of strings
+
+np_mat = np.array([[1, 2],
+                   [3, 4],
+                   [5, 6]])
+np_mat * 2
+
+# Note how + behaves differently
+np_mat + np.array([10, 10])
+np_mat + np_mat
+
+# Generate data
+# np.random.normal(mean, distribution standard deviation, number of samples)
+heights = np.round(np.random.normal(1.75, 0.2, 5000), 2)
+weights = np.round(np.random.normal(60.5, 20, 5000), 2)
+# np.column_stack(tupple)
+np_population = np.column_stack((heights, weights))
+
+mean_heights = np.mean(np_population[:,0])
+print('mean_heights', mean_heights)
+
+median_heights = np.median(np_population[:, 0])
+print('median_heights', median_heights)
+
+# Standard deviation
+std_weights = np.std(np_population[:, 1])
+print('std_weights', std_weights)
+
+# Correlation coef
+corr = np.corrcoef(np_population[:, 0], np_population[:, 1])
+print('corr', corr)
+
+
+fat_heights = heights[weights > 120]
+print(len(fat_heights))
+print(max(weights))
